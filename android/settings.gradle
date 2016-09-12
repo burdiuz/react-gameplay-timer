@@ -1,0 +1,3 @@
+rootProject.name = 'GameplayTimer'
+
+include ':app'
