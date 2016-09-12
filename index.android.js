@@ -4,8 +4,6 @@
  * @flow
  */
 
-// TODO add https://www.npmjs.com/package/react-native-keep-awake
-
 import React, { Component } from 'react';
 import padLeft from 'lodash/string/padLeft';
 import {
@@ -22,6 +20,7 @@ import {
    */
   Vibration
 } from 'react-native';
+import KeepAwake from 'react-native-keep-awake';
 
 class GameplayTimer extends Component {
 
@@ -45,6 +44,7 @@ class GameplayTimer extends Component {
   }
 
   componentWillMount () {
+    KeepAwake.activate();
     this._layoutHandler();
     this._pressHandler();
   }
