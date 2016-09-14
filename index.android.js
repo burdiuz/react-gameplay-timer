@@ -22,22 +22,21 @@ import {
 } from 'react-native';
 import KeepAwake from 'react-native-keep-awake';
 
+const LOW_TIME = 900;
+const MED_TIME = 3600;
+
+const LOW_COLOR = 0xFF6600FF;
+const MED_COLOR = 0xFFCC00FF;
+const HIG_COLOR = 0x66CC00FF;
+  
+const HISTORY_MARGIN = 5;
+const HISTORY_FONT_SIZE = 20;
+
 class GameplayTimer extends Component {
-
-  static LOW_TIME = 900;
-  static MED_TIME = 3600;
-  /*
-   static LOW_COLOR = 0xFF6666FF;
-   static MED_COLOR = 0xFFFF66FF;
-   static HIG_COLOR = 0x66FF66FF;
-   */
-  static LOW_COLOR = 0xFF6600FF;
-  static MED_COLOR = 0xFFCC00FF;
-  static HIG_COLOR = 0x66CC00FF;
-
+	
   _intervalId;
 
-  state = { fontSize: 40 };
+  state = { fontSize: 40, history: [] };
 
   constructor () {
     super();
@@ -61,10 +60,31 @@ class GameplayTimer extends Component {
     this._updateType();
   };
 
+  historyAdd () {
+    const element = (
+      <Text key={Date.now()}
+            style={[
+              styles.historyText,
+              {
+                color: this.textColor
+              }
+            ]} >
+        {this.timeString}
+      </Text>
+    );
+    const history = ([ element ]).concat(this.state.history).slice(0, this.maxHistoryLength);
+    this.setState({
+      history
+    });
+  }
+
   _pressHandler = () => {
+    if (this.time) {
+      this.historyAdd();
+    }
     this.setState({
       startTime: Date.now(),
-      currentType: GameplayTimer.LOW_COLOR
+      currentType: LOW_COLOR
     });
     this._timerHandler();
   };
@@ -88,12 +108,12 @@ class GameplayTimer extends Component {
   };
 
   _updateColor = () => {
-    let time = this.time;
-    let color = GameplayTimer.LOW_COLOR;
-    if (time > GameplayTimer.LOW_TIME && time < GameplayTimer.MED_TIME) {
-      color = GameplayTimer.MED_COLOR;
-    } else if (time > GameplayTimer.MED_TIME) {
-      color = GameplayTimer.HIG_COLOR;
+    const time = this.time;
+    let color = LOW_COLOR;
+    if (time > LOW_TIME && time < MED_TIME) {
+      color = MED_COLOR;
+    } else if (time > MED_TIME) {
+      color = HIG_COLOR;
     }
     this.setState({
       textColor: color
@@ -101,7 +121,7 @@ class GameplayTimer extends Component {
   };
 
   _updateType = () => {
-    let { textColor, currentType } = this.state;
+    const { textColor, currentType } = this.state;
     if (textColor !== currentType) {
       Vibration.vibrate();
       this.setState({
@@ -115,10 +135,10 @@ class GameplayTimer extends Component {
   }
 
   get timeString () {
-    let time = this.time;
-    let hours = String(time / 3600 % 24 >> 0);
-    let minutes = String(time / 60 % 60 >> 0);
-    let seconds = String(time % 60);
+    const time = this.time;
+    const hours = String(time / 3600 % 24 >> 0);
+    const minutes = String(time / 60 % 60 >> 0);
+    const seconds = String(time % 60);
     return `${padLeft(hours, 2, '0')}:${padLeft(minutes, 2, '0')}:${padLeft(seconds, 2, '0')}`;
   }
 
@@ -130,20 +150,35 @@ class GameplayTimer extends Component {
     return this.state.fontSize;
   }
 
+  get maxHistoryLength () {
+	const size = Dimensions.get('screen');
+	const height = Math.max(size.width, size.height);
+    return (height - HISTORY_MARGIN * 2) / HISTORY_FONT_SIZE >> 0;
+  }
+
   render () {
     return (
-      <TouchableOpacity
-        onPress={this._pressHandler}
-        onLayout={this._layoutHandler}
-        style={styles.container} >
-        <Text
-          style={[ styles.timerText, {
-            color: this.textColor,
-            fontSize: this.fontSize
-          } ]} >
-          {this.timeString}
-        </Text>
-      </TouchableOpacity>
+      <View style={styles.container} >
+        <View
+          style={styles.historyContainer} >
+          {this.state.history}
+        </View>
+        <TouchableOpacity
+          onPress={this._pressHandler}
+          onLayout={this._layoutHandler}
+          style={styles.timerContainer} >
+          <Text
+            style={[
+              styles.timerText,
+              {
+                color: this.textColor,
+                fontSize: this.fontSize
+              }
+            ]} >
+            {this.timeString}
+          </Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 }
@@ -151,9 +186,24 @@ class GameplayTimer extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 0x000000ff,
+  },
+  timerContainer: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000000',
+  },
+  historyContainer: {
+    flex: 1,
+    position: 'absolute',
+    top: HISTORY_MARGIN,
+    left: HISTORY_MARGIN,
+    right: HISTORY_MARGIN,
+    bottom: HISTORY_MARGIN,
+    opacity: 0.5,
+  },
+  historyText: {
+    fontSize: HISTORY_FONT_SIZE,
   },
   timerText: {
     textAlign: 'center',
