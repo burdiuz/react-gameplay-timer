@@ -49,7 +49,7 @@ class GameplayTimer extends Component {
   }
 
   componentDidMount () {
-    this._intervalId = setInterval(this._timerHandler, 250);
+    this._intervalId = setInterval(this._timerHandler, 100);
   }
 
   _timerHandler = () => {
