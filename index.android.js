@@ -12,6 +12,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  AsyncStorage,
   Dimensions,
   /**
    * Note for android add
@@ -28,25 +29,100 @@ const MED_TIME = 3600;
 const LOW_COLOR = 0xFF6600FF;
 const MED_COLOR = 0xFFCC00FF;
 const HIG_COLOR = 0x66CC00FF;
-  
+
 const HISTORY_MARGIN = 5;
 const HISTORY_FONT_SIZE = 20;
 
+const STATE_KEY = '@GameplayTimer:mainState';
+
+const readState = () => {
+  return AsyncStorage.getItem(STATE_KEY);
+};
+
+const noop = () => null;
+
+const writeState = (() => {
+  let prevStr = '';
+  const prepRej = Promise.reject({ message: 'Data duplicated.' }).catch(noop);
+  return (data) => {
+    let str = JSON.stringify(data);
+    if (!data || str === prevStr) {
+      return prepRej;
+    } else {
+      return AsyncStorage.setItem(STATE_KEY, str);
+    }
+  }
+})();
+
+const History = ({
+  list,
+  style,
+}) => (
+  <View
+    style={style} >
+    {
+      list.map((item, index) => (
+        <Text key={index}
+              style={[
+                styles.historyText,
+                {
+                  color: item.color
+                }
+              ]} >
+          {item.value}
+        </Text>
+      ))
+    }
+  </View>
+);
+
+const Timer = ({
+  time,
+  onPress,
+  style,
+}) => (
+  <TouchableOpacity
+    onPress={onPress}
+    style={styles.timerContainer} >
+    <Text style={[ styles.timerText, style ]} >
+      {time}
+    </Text>
+  </TouchableOpacity>
+);
+
 class GameplayTimer extends Component {
-	
   _intervalId;
 
-  state = { fontSize: 40, history: [] };
+  state = { fontSize: 40, history: [], initialized: false };
 
   constructor () {
     super();
   }
 
   componentWillMount () {
+    readState(this._init).then((str) => {
+      let data;
+      try {
+        data = str && JSON.parse(str);
+      } catch (error) {
+        console.log(error);
+      }
+      data && this.setState(data);
+      this._init();
+    }, this._init);
+  }
+
+  _init = () => {
     KeepAwake.activate();
     this._layoutHandler();
-    this._pressHandler();
-  }
+    if (!this.state.startTime) {
+      this._pressHandler();
+    }
+    this._timerHandler();
+    this.setState({
+      initialized: true
+    });
+  };
 
   componentDidMount () {
     this._intervalId = setInterval(this._timerHandler, 100);
@@ -54,25 +130,17 @@ class GameplayTimer extends Component {
 
   _timerHandler = () => {
     this.setState({
-      currentTime: Date.now()
+      currentTime: Date.now() / 1000 >> 0
     });
     this._updateColor();
     this._updateType();
   };
 
   historyAdd () {
-    const element = (
-      <Text key={Date.now()}
-            style={[
-              styles.historyText,
-              {
-                color: this.textColor
-              }
-            ]} >
-        {this.timeString}
-      </Text>
-    );
-    const history = ([ element ]).concat(this.state.history).slice(0, this.maxHistoryLength);
+    const history = ([ {
+      value: this.timeString,
+      color: this.textColor
+    } ]).concat(this.state.history).slice(0, this.maxHistoryLength);
     this.setState({
       history
     });
@@ -83,9 +151,10 @@ class GameplayTimer extends Component {
       this.historyAdd();
     }
     this.setState({
-      startTime: Date.now(),
+      startTime: Date.now() / 1000 >> 0,
       currentType: LOW_COLOR
     });
+    this._saveState();
     this._timerHandler();
   };
 
@@ -130,8 +199,14 @@ class GameplayTimer extends Component {
     }
   };
 
+  _saveState = () => {
+    if (this.state.initialized) {
+      writeState(this.state);
+    }
+  };
+
   get time () {
-    return (this.state.currentTime - this.state.startTime) / 1000 >> 0;
+    return this.state.currentTime - this.state.startTime;
   }
 
   get timeString () {
@@ -151,33 +226,32 @@ class GameplayTimer extends Component {
   }
 
   get maxHistoryLength () {
-	const size = Dimensions.get('screen');
-	const height = Math.max(size.width, size.height);
+    const size = Dimensions.get('screen');
+    const height = Math.max(size.width, size.height);
     return (height - HISTORY_MARGIN * 2) / HISTORY_FONT_SIZE >> 0;
   }
 
   render () {
-    return (
-      <View style={styles.container} >
-        <View
-          style={styles.historyContainer} >
-          {this.state.history}
-        </View>
-        <TouchableOpacity
+    let display = null;
+    if (this.state.initialized) {
+      display = (
+        <Timer
+          time={this.timeString}
           onPress={this._pressHandler}
-          onLayout={this._layoutHandler}
-          style={styles.timerContainer} >
-          <Text
-            style={[
-              styles.timerText,
-              {
-                color: this.textColor,
-                fontSize: this.fontSize
-              }
-            ]} >
-            {this.timeString}
-          </Text>
-        </TouchableOpacity>
+          style={{
+            color: this.textColor,
+            fontSize: this.fontSize
+          }} />
+      );
+    }
+    return (
+      <View
+        style={styles.container}
+        onLayout={this._layoutHandler} >
+        <History
+          list={this.state.history}
+          style={styles.historyContainer} />
+        {display}
       </View>
     );
   }
