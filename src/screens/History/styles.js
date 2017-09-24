@@ -1,7 +1,7 @@
 import { StyleSheet }from 'react-native';
 
-const HISTORY_MARGIN = 5;
-const HISTORY_FONT_SIZE = 20;
+export const HISTORY_MARGIN = 5;
+export const HISTORY_FONT_SIZE = 20;
 
 export default StyleSheet.create({
   container: {

@@ -1,17 +1,17 @@
-import createReducer from './createReducer';
+import createReducer from '../createReducer';
+import historySize from 'src/utils/historySize';
 
 const initialState = () => ({
   list: [],
 });
 
 export const historyAddEntry = (state, action) => {
-  const { value, style } = action;
+  const { text, style } = action;
+  const maxSize = historySize();
+  const list = [{ text, style }, ...state.list];
   return {
     ...state,
-    list: [
-      ...state.list,
-      { value, style }
-    ],
+    list: list.slice(0, maxSize),
   };
 };
 

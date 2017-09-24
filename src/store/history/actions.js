@@ -1,9 +1,9 @@
 export const HISTORY_ADD_ENTRY = 'historyAddEntry';
 export const HISTORY_CLEAR = 'historyClear';
 
-export const historyAddEntry = (value, color) => ({
-  value,
-  color,
+export const historyAddEntry = (text, style) => ({
+  text,
+  style,
   type: HISTORY_ADD_ENTRY,
 });
 

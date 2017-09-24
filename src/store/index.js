@@ -1,9 +1,16 @@
+import { createStore, combineReducers, compose, applyMiddleware, } from 'redux';
 import { AsyncStorage } from 'react-native';
-import { createStore, compose, applyMiddleware, } from 'redux';
 import thunk from 'redux-thunk';
 import { persistStore, autoRehydrate } from 'redux-persist';
-//import { propagateSettings, } from 'src/actions/settings';
-import reducers from 'src/reducers/index';
+import history from './history/reducer';
+import timer from './timer/reducer';
+import settings from './settings/reducer';
+
+const reducers = combineReducers({
+  history,
+  timer,
+  settings,
+});
 
 const store = createStore(
   reducers,
@@ -17,9 +24,6 @@ const store = createStore(
 persistStore(store, {
   whitelist: ['history', 'timer', 'settings'],
   storage: AsyncStorage,
-  callback: (...args) => {
-    //store.dispatch(propagateSettings());
-  },
 }).purge();
 
 export default store;

@@ -10,7 +10,7 @@ import {
 import { connect } from 'react-redux';
 import History from 'src/screens/History';
 import Timer from 'src/screens/Timer';
-import { start } from 'src/actions/timer';
+import { start } from 'src/store/timer/actions';
 
 const ACCURACY = 10;
 

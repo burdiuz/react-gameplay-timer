@@ -1,4 +1,4 @@
-import createReducer from './createReducer';
+import createReducer from '../createReducer';
 
 const initialState = () => ({
   startTime: Date.now(),

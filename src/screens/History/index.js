@@ -1,17 +1,11 @@
 import { connect } from 'react-redux';
 import History from './History';
+import { getList } from 'src/store/history/selectors'
 
-const mapStateToProps = (state) => {
-  const { history: { list } } = state;
-  return {
-    list,
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
+const mapStateToProps = (state) => ({
+  list: getList(state),
+});
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
 )(History);

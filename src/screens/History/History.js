@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
+import Text from 'src/components/Text';
 
 import styles from './styles';
 
@@ -15,11 +16,9 @@ const History = ({
         <Text key={index}
               style={[
                 styles.text,
-                {
-                  color: item.color
-                }
+                item.style,
               ]}>
-          {item.value}
+          {item.text}
         </Text>
       ))
     }
@@ -29,8 +28,8 @@ const History = ({
 History.propTypes = {
   list: PropTypes.arrayOf(
     PropTypes.shape({
-      color: PropTypes.number.isRequired,
-      value: PropTypes.string.isRequired,
+      style: PropTypes.object.isRequired,
+      text: PropTypes.string.isRequired,
     })
   ).isRequired,
 };

@@ -1,4 +1,4 @@
-import createReducer from './createReducer';
+import createReducer from '../createReducer';
 
 const createThreshold = (startTime = 0, color = 0xff0000) => ({
   startTime,

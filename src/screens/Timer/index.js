@@ -1,30 +1,17 @@
 import { connect } from 'react-redux';
 import TimerDisplay from './TimerDisplay';
-import { timerReset } from 'src/actions/application';
+import { reset } from 'src/store/application/actions';
+import { getCurrentStyle } from 'src/store/settings/selectors';
+import { getValue } from 'src/store/timer/selectors';
 
-const getCurrentThreshold = (time, thresholds) => {
-  const lastIndex = thresholds.length - 1;
-  console.log(thresholds);
-  for (let index = lastIndex; index >= 0; index--) {
-    const { startTime, style } = thresholds[index];
-    if (time >= startTime) {
-      return style;
-    }
-  }
-  return thresholds[lastIndex].style;
-};
-
-const mapStateToProps = (state) => {
-  const { settings: { thresholds }, timer: { value } } = state;
-  return {
-    style: getCurrentThreshold(value, thresholds),
-    time: value,
-  };
-};
+const mapStateToProps = (state) => ({
+  style: getCurrentStyle(state),
+  time: getValue(state),
+});
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    dispatchTimerReset: () => dispatch(timerReset()),
+    dispatchTimerReset: () => dispatch(reset()),
   };
 };
 
