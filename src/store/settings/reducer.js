@@ -8,6 +8,7 @@ const createThreshold = (startTime = 0, color = 0xff0000) => ({
 });
 
 const initialState = () => ({
+  vibrate: true,
   thresholds: [
     createThreshold(0, 0xFF6600FF),
     createThreshold(900000, 0xFFCC00FF),

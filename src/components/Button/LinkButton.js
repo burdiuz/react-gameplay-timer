@@ -1,7 +1,6 @@
 /*
  * @flow
  */
-
 import React from 'react';
 import {
   View,
@@ -13,8 +12,12 @@ import styles from './styles';
 
 const LinkButton = (props) => {
   const { label, icon, style, disabled, onPress, caps, underline, ...rest } = props;
-  const wrapperStyle = underline || underline === undefined ? [styles.linkWrapper, styles.linkUnderline] : styles.linkWrapper;
-  const buttonLabel = caps ? String(label).toUpperCase() : label;
+  const wrapperStyle = underline || underline === undefined
+    ? [styles.linkWrapper, styles.linkUnderline]
+    : styles.linkWrapper;
+  const buttonLabel = caps
+    ? String(label).toUpperCase()
+    : label;
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -22,7 +25,9 @@ const LinkButton = (props) => {
       style={[styles.touchable]}>
       <View style={wrapperStyle}>
         {icon || null}
-        <Text style={[styles.text, styles.link, style]} {...rest}>{buttonLabel}</Text>
+        <Text style={[styles.text, styles.link, style]} {...rest}>
+          {buttonLabel}
+        </Text>
       </View>
     </TouchableOpacity>
   );

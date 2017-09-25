@@ -1,7 +1,6 @@
 /*
  * @flow
  */
-
 import React from 'react';
 import Button from './Button';
 import Text from 'src/components/Text';
@@ -13,7 +12,9 @@ const TextButton = (props) => {
   return (
     <Button {...rest}>
       {icon || null}
-      <Text style={[styles.text, textStyle]}>{(`${label}`).toUpperCase()}</Text>
+      <Text style={[styles.text, textStyle]}>
+        {(`${label}`).toUpperCase()}
+      </Text>
     </Button>
   );
 };
