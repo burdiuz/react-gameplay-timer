@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import {
+  View,
+  /**
+   * Note for android add
+   * <uses-permission android:name="android.permission.VIBRATE"/>
+   * to AndroidManifest.xml
+   */
+    Vibration,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import TimeButton from 'src/components/TimeButton';
 
@@ -11,9 +19,18 @@ class TimerDisplay extends Component {
     dispatchTimerReset: PropTypes.func,
     time: PropTypes.number.isRequired,
     style: PropTypes.any,
+    startTime: PropTypes.number,
+    vibrate: PropTypes.bool,
   };
 
   state = { fontSize: 40 };
+
+  componentWillReceiveProps(nextProps) {
+    const { startTime, time, vibrate } = this.props;
+    if (vibrate && time && startTime !== nextProps.startTime) {
+      Vibration.vibrate();
+    }
+  }
 
   applyLayoutChange = (event = null) => {
     if (event) {

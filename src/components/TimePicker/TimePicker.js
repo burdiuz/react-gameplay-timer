@@ -8,69 +8,70 @@ import {
 import Modal from 'src/components/Modal';
 import { LinkButton, PrimaryButton } from 'src/components/Button';
 import Text, { Heading } from 'src/components/Text';
+import { getHours, getMinutes, getSeconds, getTimestamp } from 'src/utils/timeToString';
+import Spacer from './Spacer';
+import Input from './Input';
 
 //import styles from './styles';
-
-const Input = ({ refHandler, ...props }) => (
-  <TextInput
-    keyboardType="numeric"
-    maxLength={2}
-    underlineColorAndroid="transparent"
-    placeholderTextColor="#eeeeee"
-    placeholder="00"
-    ref={refHandler}
-    style={{
-      fontSize: 60,
-      width: 80,
-      borderRadius: 4,
-      borderWidth: 2,
-      borderColor: 0xeeeeeeff,
-    }}
-    {...props}
-  />
-);
-
-const Spacer = () => (
-  <Text
-    style={{
-      fontSize: 60,
-      width: 18,
-    }}
-  >:</Text>
-);
 
 class TimePicker extends Component {
   static propTypes = {
     visible: PropTypes.bool,
     value: PropTypes.number,
-    onChange: PropTypes.func,
+    onSubmit: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+    visible: false,
+    value: 0,
   };
 
-  hoursChangeHandle = (text) => {
-    if (text.length === 2 && this.minutesField) {
-      this.minutesField.focus();
-    }
+  state = {
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
   };
 
-  minutesChangeHandle = (text) => {
-    if (text.length === 2 && this.secondsField) {
-      this.secondsField.focus();
-    }
+  componentWillMount() {
+    this.applyToState(this.props.value);
+  }
+
+  componentWillReceiveProps({ value }) {
+    this.applyToState(value);
+  }
+
+  applyToState(value) {
+    this.setState({
+      hours: getHours(value),
+      minutes: getMinutes(value),
+      seconds: getSeconds(value),
+    });
+  }
+
+  hoursChangeHandle = (value) => {
+    this.setState({ hours: value });
   };
 
-  secondsChangeHandle = (text) => {
+  minutesChangeHandle = (value) => {
+    this.setState({ minutes: value });
   };
 
-  hoursRefHandle = (field) => this.hoursField = field;
-  minutesRefHandle = (field) => this.minutesField = field;
-  secondsRefHandle = (field) => this.secondsField = field;
+  secondsChangeHandle = (value) => {
+    this.setState({ seconds: value });
+  };
+
+  saveHandler = () => {
+    const { hours, minutes, seconds } = this.state;
+    this.props.onSubmit(getTimestamp(hours, minutes, seconds));
+  };
 
   render() {
-    const { visible } = this.props;
+    const { visible, onClose } = this.props;
+    const { hours, minutes, seconds } = this.state;
     return (
       <Modal
         visible={visible}
-        onRequestClose={() => null}
+        onRequestClose={onClose}
         transparent={true}
       >
         <Heading
@@ -89,19 +90,19 @@ class TimePicker extends Component {
           }}
         >
           <Input
-            refHandler={this.hoursRefHandle}
-            onChangeText={this.hoursChangeHandle}
+            onChange={this.hoursChangeHandle}
             autoFocus={true}
+            value={hours}
           />
           <Spacer />
           <Input
-            refHandler={this.minutesRefHandle}
-            onChangeText={this.minutesChangeHandle}
+            onChange={this.minutesChangeHandle}
+            value={minutes}
           />
           <Spacer />
           <Input
-            refHandler={this.secondsRefHandle}
-            onChangeText={this.secondsChangeHandle}
+            onChange={this.secondsChangeHandle}
+            value={seconds}
           />
         </View>
         <View
@@ -111,8 +112,15 @@ class TimePicker extends Component {
             justifyContent: 'flex-end',
           }}
         >
-          <LinkButton label="Cancel" style={{ marginRight: 20 }} />
-          <PrimaryButton label="Ok" />
+          <LinkButton
+            label="Cancel"
+            onPress={onClose}
+            style={{ marginRight: 20 }}
+          />
+          <PrimaryButton
+            label="Ok"
+            onPress={this.saveHandler}
+          />
         </View>
       </Modal>
     );

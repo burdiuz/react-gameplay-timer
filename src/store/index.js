@@ -24,6 +24,6 @@ const store = createStore(
 persistStore(store, {
   whitelist: ['history', 'timer', 'settings'],
   storage: AsyncStorage,
-}).purge();
+});//.purge();
 
 export default store;

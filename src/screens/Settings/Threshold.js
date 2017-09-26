@@ -6,7 +6,6 @@ import TimeText from 'src/components/TimeText';
 
 import styles from './styles';
 
-// Color icon can be pencil-square or square-o with BG
 class Threshold extends Component {
 
   static propTypes = {
@@ -14,11 +13,23 @@ class Threshold extends Component {
     itemStyle: PropTypes.shape({
       color: PropTypes.number,
     }),
-    removable: PropTypes.bool,
+    locked: PropTypes.bool,
+    onRemove: PropTypes.func.isRequired,
+    onColorChange: PropTypes.func.isRequired,
+  };
+
+  handleRemove = () => {
+    const { onRemove, time } = this.props;
+    onRemove(time);
+  };
+
+  handleColorChangeRequest = () => {
+    const { onColorChange, time, itemStyle: { color } } = this.props;
+    onColorChange(time, color);
   };
 
   render() {
-    const { time, removable, itemStyle: { color } } = this.props;
+    const { time, locked, itemStyle: { color } } = this.props;
     return (
       <View style={{
         paddingVertical: 10,
@@ -36,7 +47,8 @@ class Threshold extends Component {
           <FAIconButton
             name="remove"
             color="#A00"
-            disabled={!removable}
+            onPress={this.handleRemove}
+            disabled={locked}
             style={{ marginRight: 10 }}
             iconStyle={{ marginBottom: 2 }}
           />
@@ -44,6 +56,7 @@ class Threshold extends Component {
         </View>
         <Button>
           <IconButton
+            onPress={this.handleColorChangeRequest}
             style={{ width: 48, height: 48, backgroundColor: color }}
           />
         </Button>

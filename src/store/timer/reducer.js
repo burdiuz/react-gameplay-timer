@@ -15,7 +15,6 @@ export const timerReset = (state, action) => {
 };
 export const timerTick = (state, action) => {
   const { value } = action;
-  console.log('timerTick', value);
   return {
     ...state,
     value,

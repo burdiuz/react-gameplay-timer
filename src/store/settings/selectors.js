@@ -15,4 +15,8 @@ export const getCurrentThreshold = (state) => {
   return thresholds[lastIndex];
 };
 
+export const getVibrate = (state) => state.settings.vibrate;
+
+export const getCurrentStartTime = (state) => getCurrentThreshold(state).startTime;
+
 export const getCurrentStyle = (state) => getCurrentThreshold(state).style;

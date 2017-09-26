@@ -8,6 +8,17 @@ import styles from './styles';
 
 class Colors extends Component {
 
+  static propTypes = {
+    navigation: PropTypes.shape({
+      state: PropTypes.shape({
+        params: PropTypes.shape({
+          value:PropTypes.number,
+          onSelect: PropTypes.func.isRequired,
+        }),
+      }),
+    }),
+  };
+
   state = { selectedValue: null, };
 
   handleColorSelected = (value) => {
@@ -16,11 +27,19 @@ class Colors extends Component {
     });
   };
 
+  handleSelect = () => {
+    const { navigation } = this.props;
+    const { state: { params: { onSelect } } } = navigation;
+    navigation.goBack();
+    onSelect(this.state.selectedValue);
+  };
+
   renderApplyButton() {
     if (this.state.selectedValue === null) return null;
     return (
       <PrimaryButton
         label="Apply"
+        onPress={this.handleSelect}
         style={{
           margin: 5,
         }}
