@@ -1,3 +1,6 @@
+/*
+ * @flow
+ */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
@@ -12,10 +15,14 @@ class Threshold extends Component {
     time: PropTypes.number.isRequired,
     itemStyle: PropTypes.shape({
       color: PropTypes.number,
-    }),
-    locked: PropTypes.bool,
+    }).isRequired,
     onRemove: PropTypes.func.isRequired,
     onColorChange: PropTypes.func.isRequired,
+    locked: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    locked: false,
   };
 
   handleRemove = () => {
@@ -31,33 +38,22 @@ class Threshold extends Component {
   render() {
     const { time, locked, itemStyle: { color } } = this.props;
     return (
-      <View style={{
-        paddingVertical: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderBottomWidth: 1,
-        borderBottomColor: 0x999999ff,
-      }}>
-        <View style={{
-          flexGrow: 0.2,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}>
+      <View style={styles.thresholdView}>
+        <View style={styles.thresholdTextView}>
           <FAIconButton
             name="remove"
             color="#A00"
             onPress={this.handleRemove}
             disabled={locked}
-            style={{ marginRight: 10 }}
-            iconStyle={{ marginBottom: 2 }}
+            style={styles.thresholdRemove}
+            iconStyle={styles.thresholdRemoveIcon}
           />
-          <TimeText time={time} style={{ fontSize: 26 }} />
+          <TimeText time={time} style={styles.thresholdText} />
         </View>
         <Button>
           <IconButton
             onPress={this.handleColorChangeRequest}
-            style={{ width: 48, height: 48, backgroundColor: color }}
+            style={[styles.thresholdColor, { backgroundColor: color }]}
           />
         </Button>
       </View>

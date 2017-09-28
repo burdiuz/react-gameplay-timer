@@ -1,3 +1,6 @@
+/*
+ * @flow
+ */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text } from 'react-native';
@@ -15,6 +18,10 @@ const TimeText = ({
 TimeText.propTypes = {
   time: PropTypes.number.isRequired,
   style: PropTypes.any,
+};
+
+TimeText.defaultProps = {
+  style: null,
 };
 
 export default TimeText;

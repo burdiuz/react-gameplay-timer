@@ -1,25 +1,24 @@
+/*
+ * @flow
+ */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
+import { View } from 'react-native';
 import Modal from 'src/components/Modal';
 import { LinkButton, PrimaryButton } from 'src/components/Button';
-import Text, { Heading } from 'src/components/Text';
+import { Heading } from 'src/components/Text';
 import { getHours, getMinutes, getSeconds, getTimestamp } from 'src/utils/timeToString';
 import Spacer from './Spacer';
-import Input from './Input';
+import NumInput from './NumInput';
 
-//import styles from './styles';
+import styles from './styles';
 
 class TimePicker extends Component {
   static propTypes = {
-    visible: PropTypes.bool,
-    value: PropTypes.number,
     onSubmit: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
+    visible: PropTypes.bool,
+    value: PropTypes.number,
   };
   static defaultProps = {
     visible: false,
@@ -75,47 +74,36 @@ class TimePicker extends Component {
         transparent={true}
       >
         <Heading
-          style={{
-            marginBottom: 15,
-          }}
+          style={styles.heading}
         >
           Specify time
         </Heading>
         <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: 15,
-          }}
+          style={styles.container}
         >
-          <Input
+          <NumInput
             onChange={this.hoursChangeHandle}
             autoFocus={true}
             value={hours}
           />
           <Spacer />
-          <Input
+          <NumInput
             onChange={this.minutesChangeHandle}
             value={minutes}
           />
           <Spacer />
-          <Input
+          <NumInput
             onChange={this.secondsChangeHandle}
             value={seconds}
           />
         </View>
         <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-          }}
+          style={styles.buttons}
         >
           <LinkButton
             label="Cancel"
             onPress={onClose}
-            style={{ marginRight: 20 }}
+            style={styles.cancelButton}
           />
           <PrimaryButton
             label="Ok"
@@ -125,7 +113,6 @@ class TimePicker extends Component {
       </Modal>
     );
   }
-
 }
 
 export default TimePicker;

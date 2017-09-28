@@ -2,6 +2,7 @@
  * @flow
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   View,
   TouchableOpacity,
@@ -10,8 +11,16 @@ import Text from 'src/components/Text';
 
 import styles from './styles';
 
-const LinkButton = (props) => {
-  const { label, icon, style, disabled, onPress, caps, underline, ...rest } = props;
+const LinkButton = ({
+  label,
+  icon,
+  style,
+  disabled,
+  onPress,
+  caps,
+  underline,
+  ...rest
+}) => {
   const wrapperStyle = underline || underline === undefined
     ? [styles.linkWrapper, styles.linkUnderline]
     : styles.linkWrapper;
@@ -31,6 +40,24 @@ const LinkButton = (props) => {
       </View>
     </TouchableOpacity>
   );
+};
+
+LinkButton.propTypes = {
+  label: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
+  icon: PropTypes.node,
+  style: PropTypes.any,
+  disabled: PropTypes.bool,
+  caps: PropTypes.bool,
+  underline: PropTypes.bool,
+};
+
+LinkButton.defaultProps = {
+  icon: null,
+  style: null,
+  disabled: false,
+  caps: false,
+  underline: false,
 };
 
 export default LinkButton;

@@ -2,6 +2,8 @@
  * @flow
  */
 import React from 'react';
+import PropTypes from 'prop-types';
+import { colorType } from 'src/utils/propTypes';
 import {
   View,
   TouchableOpacity,
@@ -18,7 +20,7 @@ const getColor = (disabled, selected, color, disabledColor, selectedColor) => {
   } else if (selected) {
     value = selectedColor;
   }
-  return value || color;
+  return value || typeof(value) === 'number' ? value : color;
 };
 
 export const CheckBoxView = ({
@@ -45,6 +47,23 @@ export const CheckBoxView = ({
   />
 );
 
+CheckBoxView.propTypes = {
+  selected: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
+  color: colorType,
+  disabledColor: colorType,
+  selectedColor: colorType,
+  style: PropTypes.any,
+};
+
+CheckBoxView.defaultProps = {
+  disabled: false,
+  color: '#4285F4',
+  disabledColor: '#999999',
+  selectedColor: '#4285F4',
+  style: null,
+};
+
 export const CheckBoxButton = ({
   onPress,
   disabled,
@@ -70,6 +89,13 @@ export const CheckBoxButton = ({
   </TouchableOpacity>
 );
 
+CheckBoxButton.propTypes = {
+  ...CheckBoxView.propTypes,
+  onPress: PropTypes.func.isRequired,
+};
+
+CheckBoxButton.defaultProps = {};
+
 const CheckBox = ({
   label,
   onPress,
@@ -85,10 +111,7 @@ const CheckBox = ({
     disabled={disabled}
   >
     <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-      }}
+      style={styles.checkboxView}
     >
       <CheckBoxView
         disabled={disabled}
@@ -99,15 +122,22 @@ const CheckBox = ({
         style={style}
       />
       <Text
-        style={{
-          paddingLeft: 5,
-          color: getColor(disabled, selected, undefined, disabledColor, undefined),
-        }}
+        style={[
+          styles.checkboxText,
+          { color: getColor(disabled, selected, undefined, disabledColor, undefined) }
+        ]}
       >
         {label}
       </Text>
     </View>
   </TouchableOpacity>
 );
+
+CheckBox.propTypes = {
+  ...CheckBoxButton.propTypes,
+  label: PropTypes.string.isRequired,
+};
+
+CheckBox.defaultProps = {};
 
 export default CheckBox;

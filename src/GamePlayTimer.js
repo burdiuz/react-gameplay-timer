@@ -3,10 +3,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import History from 'src/screens/History';
 import Timer from 'src/screens/Timer';
@@ -19,6 +16,8 @@ class GamePlayTimer extends Component {
   static propTypes = {
     dispatchStart: PropTypes.func.isRequired,
   };
+
+  static defaultProps = {};
 
   componentWillMount() {
     this.props.dispatchStart(ACCURACY);

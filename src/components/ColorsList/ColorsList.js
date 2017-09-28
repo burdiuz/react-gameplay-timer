@@ -1,3 +1,6 @@
+/*
+ * @flow
+ */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView, View } from 'react-native';
@@ -37,6 +40,17 @@ const ColorsList = ({
       </View>
     </ScrollView>
   );
+};
+
+ColorsList.propTypes = {
+  selectedValue: PropTypes.number,
+  onSelect: PropTypes.func.isRequired,
+  style: PropTypes.any,
+};
+
+ColorsList.defaultProps = {
+  selectedValue: -1,
+  style: null,
 };
 
 export default ColorsList;

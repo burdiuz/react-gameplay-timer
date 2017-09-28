@@ -1,24 +1,33 @@
+/*
+ * @flow
+ */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
   View,
-  Modal,
+  Modal as ModalBase,
   KeyboardAvoidingView,
 } from 'react-native';
 
 import styles from './styles';
 
-class TimePicker extends Component {
+class Modal extends Component {
   static propTypes = {
     visible: PropTypes.bool.isRequired,
     onRequestClose: PropTypes.func.isRequired,
-    style: PropTypes.object,
+    children: PropTypes.node,
+    style: PropTypes.any,
+  };
+
+  static defaultProps = {
+    children: null,
+    style: null,
   };
 
   render() {
     const { children, visible, style, onRequestClose } = this.props;
     return (
-      <Modal
+      <ModalBase
         visible={visible}
         onRequestClose={onRequestClose}
         transparent={true}
@@ -28,10 +37,9 @@ class TimePicker extends Component {
             {children}
           </View>
         </KeyboardAvoidingView>
-      </Modal>
+      </ModalBase>
     );
   }
-
 }
 
-export default TimePicker;
+export default Modal;

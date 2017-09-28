@@ -1,3 +1,6 @@
+/*
+ * @flow
+ */
 import { HISTORY_MARGIN, HISTORY_FONT_SIZE } from 'src/screens/History/styles';
 import { Dimensions } from 'react-native';
 

@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
+import Input from 'src/components/Input';
 
-//import styles from './styles';
+import styles from './styles';
 
 const convertIntString = (str) => {
   let value = String(parseInt(str) || '0');
   const length = value.length;
 
-  if (length == 1) {
+  if (length === 1) {
     value = `0${value}`;
   } else if (length > 2) {
     value = value.substr(0, 2);
@@ -21,11 +17,16 @@ const convertIntString = (str) => {
   return value;
 };
 
-class Input extends Component {
+class NumInput extends Component {
   static propTypes = {
-    value: PropTypes.number,
+    value: PropTypes.number.isRequired,
     onChange: PropTypes.func,
-    style: PropTypes.object,
+    style: PropTypes.any,
+  };
+
+  static defaultProps = {
+    onChange: null,
+    style: null,
   };
 
   state = {
@@ -58,27 +59,20 @@ class Input extends Component {
   render() {
     const { onChange, style, ...props } = this.props;
     return (
-      <TextInput
+      <Input
         {...props}
         keyboardType="numeric"
         maxLength={3}
-        underlineColorAndroid="transparent"
         placeholderTextColor="#eeeeee"
         placeholder="00"
         selectTextOnFocus={true}
         textAlign="right"
         onChangeText={this.onChangeText}
         value={this.state.valueString}
-        style={[{
-          fontSize: 60,
-          width: 80,
-          borderRadius: 4,
-          borderWidth: 2,
-          borderColor: 0xeeeeeeff,
-        }, style]}
+        style={[styles.input, style]}
       />
     );
   }
 }
 
-export default Input;
+export default NumInput;

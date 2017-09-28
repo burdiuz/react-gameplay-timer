@@ -1,4 +1,8 @@
+/*
+ * @flow
+ */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   View,
   /**
@@ -8,19 +12,23 @@ import {
    */
     Vibration,
 } from 'react-native';
-import PropTypes from 'prop-types';
 import TimeButton from 'src/components/TimeButton';
 
 import styles from './styles';
 
 class TimerDisplay extends Component {
-
   static propTypes = {
-    dispatchTimerReset: PropTypes.func,
+    dispatchTimerReset: PropTypes.func.isRequired,
     time: PropTypes.number.isRequired,
     style: PropTypes.any,
     startTime: PropTypes.number,
     vibrate: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    style: null,
+    startTime: 0,
+    vibrate: false,
   };
 
   state = { fontSize: 40 };

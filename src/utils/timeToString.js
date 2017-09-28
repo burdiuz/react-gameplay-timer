@@ -1,3 +1,6 @@
+/*
+ * @flow
+ */
 import { padStart } from 'lodash/string';
 
 export const getHours = (time) => (time / 3600000 >> 0);

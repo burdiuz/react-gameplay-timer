@@ -1,3 +1,6 @@
+/*
+ * @flow
+ */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
@@ -32,6 +35,11 @@ History.propTypes = {
       text: PropTypes.string.isRequired,
     })
   ).isRequired,
+  style: PropTypes.any,
+};
+
+History.defaultProps = {
+  style: null,
 };
 
 export default History;

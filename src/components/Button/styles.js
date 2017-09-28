@@ -31,6 +31,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlignVertical: 'center',
   },
+  checkboxView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkboxText: {
+    paddingLeft: 5,
+  },
 });
 
 export default styles;

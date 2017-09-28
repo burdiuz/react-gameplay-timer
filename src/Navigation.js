@@ -1,3 +1,6 @@
+/*
+ * @flow
+ */
 import React from 'react';
 import GamePlayTimer from './GamePlayTimer';
 import Settings from 'src/screens/Settings';

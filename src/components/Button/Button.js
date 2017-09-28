@@ -2,6 +2,8 @@
  * @flow
  */
 import React from 'react';
+import PropTypes from 'prop-types';
+import { colorType } from 'src/utils/propTypes';
 import {
   View,
   TouchableOpacity,
@@ -22,11 +24,25 @@ const Button = ({
     style={[styles.touchable, style]}
     {...touchable}>
     <View style={[styles.container, {
-      backgroundColor: disabled && disabledColor || color,
+      backgroundColor: disabled && typeof(disabledColor) === 'number' ? disabledColor : color,
     }]}>
       {children}
     </View>
   </TouchableOpacity>
 );
+
+Button.propTypes = {
+  style: PropTypes.any,
+  disabled: PropTypes.bool,
+  color: colorType,
+  disabledColor: colorType,
+  children: PropTypes.node,
+};
+
+Button.defaultProps = {
+  style: null,
+  disabled: false,
+  children: null,
+};
 
 export default Button;

@@ -1,3 +1,6 @@
+/*
+ * @flow
+ */
 import React from 'react';
 import Text from './Text';
 
@@ -9,5 +12,11 @@ const Heading = (props) => {
     <Text style={[styles.heading, style]} {...rest}>{children}</Text>
   );
 };
+
+Heading.propTypes = {
+  ...Text.propTypes,
+};
+
+Heading.defaultProps = {};
 
 export default Heading;

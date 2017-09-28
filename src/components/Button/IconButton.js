@@ -2,13 +2,16 @@
  * @flow
  */
 import React from 'react';
-import { TouchableOpacity, } from 'react-native';
+import PropTypes from 'prop-types';
+import { colorType } from 'src/utils/propTypes';
+import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
 
 export const IconButton = ({
   disabled,
+  color,
   disabledColor,
   style,
   children,
@@ -23,15 +26,27 @@ export const IconButton = ({
       justifyContent: 'center',
       borderRadius: 4,
       borderWidth: 3,
-      borderColor: disabled ? 0x999999ff : 0x4285F4ff,
+      borderColor: disabled ? disabledColor : color,
     }, style]}
     {...touchable}>
     {children}
   </TouchableOpacity>
 );
 
+IconButton.propTypes = {
+  disabled: PropTypes.bool,
+  color: colorType,
+  disabledColor: colorType,
+  style: PropTypes.any,
+  children: PropTypes.node,
+};
+
 IconButton.defaultProps = {
   disabled: false,
+  color: 0x4285F4ff,
+  disabledColor: 0x999999ff,
+  style: null,
+  children: null,
 };
 
 export const FAIconButton = ({
@@ -59,11 +74,23 @@ export const FAIconButton = ({
   </IconButton>
 );
 
+FAIconButton.propTypes = {
+  name: PropTypes.string.isRequired,
+  size: PropTypes.number,
+  disabled: PropTypes.bool,
+  color: colorType,
+  disabledColor: colorType,
+  style: PropTypes.any,
+  children: PropTypes.node,
+};
+
 FAIconButton.defaultProps = {
   size: 30,
   disabled: false,
   color: '#4285F4',
   disabledColor: '#999',
+  style: null,
+  children: null,
 };
 
 export default IconButton;

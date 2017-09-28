@@ -1,3 +1,6 @@
+/*
+ * @flow
+ */
 import React from 'react';
 import TextButton from './TextButton';
 
@@ -8,5 +11,11 @@ const PrimaryButton = (props) => (
     {...props}
   />
 );
+
+PrimaryButton.propTypes = {
+  ...TextButton.propTypes,
+};
+
+PrimaryButton.defaultProps = {};
 
 export default PrimaryButton;

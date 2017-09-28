@@ -1,3 +1,6 @@
+/*
+ * @flow
+ */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableHighlight, View } from 'react-native';
@@ -5,6 +8,17 @@ import { TouchableHighlight, View } from 'react-native';
 import styles from './styles';
 
 class ColorsListItem extends Component {
+
+  static propTypes = {
+    value: PropTypes.number.isRequired,
+    onPress: PropTypes.func.isRequired,
+    selected: PropTypes.bool.isRequired,
+    style: PropTypes.any,
+  };
+
+  static defaultProps = {
+    style: null,
+  };
 
   shouldComponentUpdate(nextProps) {
     return this.props.selected !== nextProps.selected;
@@ -42,6 +56,6 @@ class ColorsListItem extends Component {
       </TouchableHighlight>
     );
   };
-
 }
+
 export default ColorsListItem;

@@ -2,13 +2,13 @@
  * @flow
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import Button from './Button';
 import Text from 'src/components/Text';
 
 import styles from './styles';
 
-const TextButton = (props) => {
-  const { label, icon, textStyle, ...rest } = props;
+const TextButton = ({ label, icon, textStyle, ...rest }) => {
   return (
     <Button {...rest}>
       {icon || null}
@@ -17,6 +17,18 @@ const TextButton = (props) => {
       </Text>
     </Button>
   );
+};
+
+TextButton.propTypes = {
+  ...Button.propTypes,
+  label: PropTypes.string.isRequired,
+  icon: PropTypes.node,
+  textStyle: PropTypes.any,
+};
+
+TextButton.defaultProps = {
+  icon: null,
+  textStyle: null,
 };
 
 export default TextButton;

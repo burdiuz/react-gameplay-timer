@@ -1,6 +1,9 @@
+/*
+ * @flow
+ */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TouchableHighlight } from 'react-native';
+import { View } from 'react-native';
 import PrimaryButton from 'src/components/Button';
 import ColorsList from 'src/components/ColorsList';
 
@@ -12,12 +15,14 @@ class Colors extends Component {
     navigation: PropTypes.shape({
       state: PropTypes.shape({
         params: PropTypes.shape({
-          value:PropTypes.number,
+          value: PropTypes.number,
           onSelect: PropTypes.func.isRequired,
-        }),
-      }),
-    }),
+        }).isRequired,
+      }).isRequired,
+    }).isRequired,
   };
+
+  static defaultProps = {};
 
   state = { selectedValue: null, };
 
@@ -40,9 +45,7 @@ class Colors extends Component {
       <PrimaryButton
         label="Apply"
         onPress={this.handleSelect}
-        style={{
-          margin: 5,
-        }}
+        style={styles.applyButton}
       />
 
     );
@@ -50,16 +53,11 @@ class Colors extends Component {
 
   render() {
     return (
-      <View style={{
-        flex: 1,
-        alignItems: 'flex-end',
-      }}>
+      <View style={styles.container}>
         <ColorsList
           selectedValue={this.state.selectedValue}
           onSelect={this.handleColorSelected}
-          style={{
-            paddingBottom: 100,
-          }}
+          style={styles.list}
         />
         {this.renderApplyButton()}
       </View>
