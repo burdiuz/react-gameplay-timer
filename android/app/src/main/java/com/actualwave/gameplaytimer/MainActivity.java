@@ -14,10 +14,10 @@ public class MainActivity extends ReactActivity {
     protected String getMainComponentName() {
         return "GamePlayTimer";
     }
-
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.show(this);
         super.onCreate(savedInstanceState);
-    }
+    } 
 }

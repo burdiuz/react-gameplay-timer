@@ -31,6 +31,11 @@ public class MainApplication extends Application implements ReactApplication {
             new KCKeepAwakePackage()
       );
     }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
+    }
   };
 
   @Override
