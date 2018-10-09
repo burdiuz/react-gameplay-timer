@@ -26,6 +26,9 @@ project.xcworkspace
 #
 build/
 .idea
+.vscode
+.atom
+.history
 .gradle
 local.properties
 *.iml

@@ -107,8 +107,8 @@ android {
         applicationId "com.actualwave.gameplaytimer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "2.1.0"
+        versionCode 1020101
+        versionName "2.1.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
